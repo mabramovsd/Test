@@ -43,13 +43,16 @@ int main()
     int kolichestvo_pravilnyh = 0;
     char stroka_dlya_kolichestvo_pravilnyh[100];
 
-    Hero face = {450, 600, 450, 600, 140, 190, 4, txLoadImage("Лицо.bmp")};
+    HDC black_hole = txLoadImage("Черная дыра.bmp");
+    HDC jaguar = txLoadImage("ягуар.bmp");
+    Hero face = {450, 600, 450, 600, 169, 200, 4, txLoadImage("Лицо.bmp")};
 
     //Заполняем вопросы нормально
     {
-    que[count_questions++] = {"Выберите число",
-        {{"1", true},
-         {"Курица", false}}
+    que[count_questions++] = {"Куда ты прыгнешь?",
+        {{"", true, black_hole},
+         {"", false, black_hole}},
+        jaguar
     };
     que[count_questions++] = {"Это невопрос. Все ответы правильные",
         {{"Это ответ1", true},
@@ -87,7 +90,7 @@ int main()
             que[nomer].ans[otvet].x2 = que[nomer].ans[otvet].x1 + shirina_otveta - 200;
 
             que[nomer].ans[otvet].y1 = 300;
-            que[nomer].ans[otvet].y2 = 400;
+            que[nomer].ans[otvet].y2 = 500;
         }
     }
 
@@ -100,7 +103,7 @@ int main()
         txClear();
         drawQuestion(que[nomer_voprosa]);
 
-        txBitBlt (txDC(), face.x - face.width / 2, face.y - face.height / 2, face.width, face.height, face.pic);
+        txTransparentBlt (txDC(), face.x - face.width / 2, face.y - face.height / 2, face.width, face.height, face.pic, 0, 0, TX_WHITE);
 
         move_hero(&face);
 
@@ -154,6 +157,8 @@ int main()
     }
 
     txDeleteDC(face.pic);
+    txDeleteDC(jaguar);
+    txDeleteDC(black_hole);
 
     return 0;
 }
