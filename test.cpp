@@ -43,16 +43,19 @@ int main()
     int kolichestvo_pravilnyh = 0;
     char stroka_dlya_kolichestvo_pravilnyh[100];
 
-    HDC black_hole = txLoadImage("Черная дыра.bmp");
-    HDC jaguar = txLoadImage("ягуар.bmp");
-    Hero face = {450, 600, 450, 600, 169, 200, 4, txLoadImage("Лицо.bmp")};
+    HDC hole = txLoadImage("Яма.bmp");
+    HDC iguana = txLoadImage("Игуана.bmp");
+    Hero face = {450, 600, 450, 600, 176, 257, 4, txLoadImage("Лицо.bmp")};
+
+    txSelectFont("Arial", 5);
+    txSetColor(TX_BLACK);
 
     //Заполняем вопросы нормально
     {
     que[count_questions++] = {"Куда ты прыгнешь?",
-        {{"", true, black_hole},
-         {"", false, black_hole}},
-        jaguar
+        {{"", true, hole},
+         {"", false, hole}},
+        iguana
     };
     que[count_questions++] = {"Это невопрос. Все ответы правильные",
         {{"Это ответ1", true},
@@ -86,11 +89,11 @@ int main()
             //900 - ширина экрана
             int shirina_otveta = 900 / que[nomer].count_answers;
 
-            que[nomer].ans[otvet].x1 = 100 + otvet * shirina_otveta;
-            que[nomer].ans[otvet].x2 = que[nomer].ans[otvet].x1 + shirina_otveta - 200;
+            que[nomer].ans[otvet].x1 = 125 + otvet * shirina_otveta;
+            que[nomer].ans[otvet].x2 = que[nomer].ans[otvet].x1 + shirina_otveta - 250;
 
             que[nomer].ans[otvet].y1 = 300;
-            que[nomer].ans[otvet].y2 = 500;
+            que[nomer].ans[otvet].y2 = 490;
         }
     }
 
@@ -99,7 +102,7 @@ int main()
     while (nomer_voprosa < count_questions)
     {
         txBegin();
-        txSetFillColor(TX_BLACK);
+        txSetFillColor(TX_WHITE);
         txClear();
         drawQuestion(que[nomer_voprosa]);
 
@@ -138,7 +141,7 @@ int main()
 
     //Результат
     {
-    txSetFillColor(TX_BLACK);
+    txSetFillColor(TX_WHITE);
     txClear();
     sprintf(stroka_dlya_kolichestvo_pravilnyh,
         "Количество правильных ответов %d из %d",
@@ -157,8 +160,8 @@ int main()
     }
 
     txDeleteDC(face.pic);
-    txDeleteDC(jaguar);
-    txDeleteDC(black_hole);
+    txDeleteDC(iguana);
+    txDeleteDC(hole);
 
     return 0;
 }
