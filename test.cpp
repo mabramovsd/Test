@@ -44,7 +44,9 @@ int main()
     char stroka_dlya_kolichestvo_pravilnyh[100];
 
     HDC hole = txLoadImage("Яма.bmp");
+    HDC button = txLoadImage("Кнопка.bmp");
     HDC iguana = txLoadImage("Игуана.bmp");
+    HDC agutin = txLoadImage("Агутин.bmp");
     Hero face = {450, 600, 450, 600, 176, 257, 4, txLoadImage("Лицо.bmp")};
 
     txSetColor(TX_BLACK);
@@ -56,9 +58,10 @@ int main()
          {"", false, hole}},
         iguana
     };
-    que[count_questions++] = {"Это невопрос. Все ответы правильные",
-        {{"Это ответ1", true},
-         {"Это ответ2", true}}
+    que[count_questions++] = {"На какую кнопку нажмешь?",
+        {{"", false, button},
+         {"", true, button}},
+        agutin
     };
     que[count_questions++] = {"Выберите число",
         {{"2", true},
@@ -160,7 +163,9 @@ int main()
 
     txDeleteDC(face.pic);
     txDeleteDC(iguana);
+    txDeleteDC(agutin);
     txDeleteDC(hole);
+    txDeleteDC(button);
 
     return 0;
 }
