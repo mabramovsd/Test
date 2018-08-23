@@ -22,6 +22,7 @@ void drawAnswer(Answer ans)
         txSetFillColor(TX_RED);
         txRectangle(ans.x1, ans.y1, ans.x2, ans.y2);
     }
+    txSelectFont("Arial", 10);
     txDrawText(ans.x1, ans.y1, ans.x2, ans.y2, ans.text);
 }
 
@@ -46,6 +47,7 @@ void drawQuestion(Question que)
         txSetFillColor(TX_RED);
         txRectangle(100, 0, 800, 100);
     }
+    txSelectFont("Arial", 50);
     txDrawText(100, 0, 800, 100, que.text);
 
     for (int nomer = 0; nomer < que.count_answers; nomer++)

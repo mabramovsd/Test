@@ -47,7 +47,6 @@ int main()
     HDC iguana = txLoadImage("Игуана.bmp");
     Hero face = {450, 600, 450, 600, 176, 257, 4, txLoadImage("Лицо.bmp")};
 
-    txSelectFont("Arial", 5);
     txSetColor(TX_BLACK);
 
     //Заполняем вопросы нормально
