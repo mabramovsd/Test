@@ -47,12 +47,14 @@ int main()
     HDC button = txLoadImage("Кнопка.bmp");
     HDC iguana = txLoadImage("Игуана.bmp");
     HDC agutin = txLoadImage("Агутин.bmp");
+    HDC dinosaur = txLoadImage("Динозавр.bmp");
+    HDC cheburek = txLoadImage("Чебурек.bmp");
+    HDC explosion = txLoadImage("Взрыв.bmp");
     Hero face = {450, 600, 450, 600, 176, 257, 4, txLoadImage("Лицо.bmp")};
 
     txSetColor(TX_BLACK);
 
     //Заполняем вопросы нормально
-    {
     que[count_questions++] = {"Куда ты прыгнешь?",
         {{"", true, hole},
          {"", false, hole}},
@@ -63,15 +65,6 @@ int main()
          {"", true, button}},
         agutin
     };
-    que[count_questions++] = {"Выберите число",
-        {{"2", true},
-         {"Вася", false}}
-    };
-    que[count_questions++] = {"Выберите число",
-        {{"2", true},
-         {"15", true}}
-    };
-    }
 
 
     //Считаем количество ответов и расставляем их
@@ -101,6 +94,7 @@ int main()
 
     //Рисуем вопросы
     int nomer_voprosa = 0;
+    int current_time = 0;
     while (nomer_voprosa < count_questions)
     {
         txBegin();
@@ -109,15 +103,7 @@ int main()
         drawQuestion(que[nomer_voprosa]);
 
         txTransparentBlt (txDC(), face.x - face.width / 2, face.y - face.height / 2, face.width, face.height, face.pic, 0, 0, TX_WHITE);
-
         move_hero(&face);
-
-
-        sprintf(stroka_dlya_kolichestvo_pravilnyh,
-            "Количество правильных ответов %d из %d",
-            kolichestvo_pravilnyh,
-            nomer_voprosa);
-        txTextOut(30, 100, stroka_dlya_kolichestvo_pravilnyh);
 
         for (int nomer = 0; nomer < que[nomer_voprosa].count_answers; nomer++)
         {
@@ -137,28 +123,51 @@ int main()
             }
         }
 
+        //Динозавр ест человека
+        if (current_time >= 500)
+        {
+            int dino_x = 1500;
+            int dino_y = face.y;
+
+            while (dino_x >= face.x)
+            {
+                txBegin();
+                txSetFillColor(TX_WHITE);
+                txClear();
+                txTransparentBlt (txDC(), face.x - face.width / 2, face.y - face.height / 2, face.width, face.height, face.pic, 0, 0, TX_WHITE);
+                txTransparentBlt (txDC(), dino_x-100, dino_y-200, 1000, 520, dinosaur, 0, 0, TX_WHITE);
+
+                dino_x -= 3;
+                dino_y = face.y;
+                txSleep(10);
+                txEnd();
+            }
+
+            return 0;
+        }
+
         txSleep(3);
+        current_time += 3;
         txEnd();
     }
 
     //Результат
-    {
     txSetFillColor(TX_WHITE);
     txClear();
-    sprintf(stroka_dlya_kolichestvo_pravilnyh,
-        "Количество правильных ответов %d из %d",
-        kolichestvo_pravilnyh,
-        nomer_voprosa);
-    txTextOut(30, 100, stroka_dlya_kolichestvo_pravilnyh);
 
-    if ((100 * kolichestvo_pravilnyh) / nomer_voprosa > 80)
+    if (kolichestvo_pravilnyh == nomer_voprosa)
     {
-        txTextOut(30, 400, "Вы гений");
+        txTransparentBlt (txDC(), 0, 0, 900, 600, cheburek, 0, 0, TX_WHITE);
+        txSetColor(TX_YELLOW);
+        txSelectFont("Arial", 50);
+        txDrawText(0, 0, 800, 100, "Норм");
     }
-    else
+    else if (kolichestvo_pravilnyh == 0)
     {
-        txTextOut(30, 400, "Вы идиот");
-    }
+        txTransparentBlt (txDC(), 0, 0, 900, 600, explosion, 0, 0, TX_WHITE);
+        txSetColor(TX_YELLOW);
+        txSelectFont("Arial", 50);
+        txDrawText(0, 0, 800, 100, "Ты идиот");
     }
 
     txDeleteDC(face.pic);
@@ -166,6 +175,9 @@ int main()
     txDeleteDC(agutin);
     txDeleteDC(hole);
     txDeleteDC(button);
+    txDeleteDC(dinosaur);
+    txDeleteDC(cheburek);
+    txDeleteDC(explosion);
 
     return 0;
 }
